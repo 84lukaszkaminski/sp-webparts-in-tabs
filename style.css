@@ -21,7 +21,6 @@
     -ms-user-select: none;
     user-select: none;
 }
-.insane-eplison-webpart-tabbar ul li:hover,
 .insane-eplison-webpart-tabbar ul li[selected=selected] {
     background-color: rgba( 239,239,239,0.78 );
     padding: 1px 10px 5px 10px;
