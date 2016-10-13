@@ -1,3 +1,32 @@
-<script type="text/javascript" src="../SiteAssets/InsaneEpsilon/script.js"></script>
-<link rel="stylesheet" type="text/css" href="../SiteAssets/InsaneEpsilon/style.css?rev=1"></link>
-<div class="insane-eplison-webpart-tabbar"></div>
+<script>
+(function () {
+    var scripts, siteAbsoluteUrl, containerNode, scriptNode, linkNode, indicator;
+
+    function areScriptsAlreadyIncluded(indicator) {
+        return Array.prototype.slice.call(document.getElementsByTagName('link'), 0).some(function (oneLink) {
+            return oneLink.href && oneLink.href == indicator;
+        });
+    }
+
+    siteAbsoluteUrl = _spPageContextInfo.siteAbsoluteUrl;
+    indicator = siteAbsoluteUrl + '/SiteAssets/SPWebpartsInTabs/style.css?rev=2';
+
+    containerNode = document.createElement('div');
+    containerNode.className = 'insane-eplison-webpart-tabbar';
+    document.write(containerNode.outerHTML);
+    
+    if(!areScriptsAlreadyIncluded(indicator)) {
+        scriptNode = document.createElement('script');
+        scriptNode.type = 'text/javascript';
+        scriptNode.src = siteAbsoluteUrl + '/SiteAssets/SPWebpartsInTabs/script.js?rev=2';
+
+        linkNode = document.createElement('link');
+        linkNode.rel = 'stylesheet';
+        linkNode.type = 'text/css';
+        linkNode.href = indicator;
+
+        document.write(linkNode.outerHTML);
+        document.write(scriptNode.outerHTML);
+    }
+})();
+</script>

@@ -4,7 +4,8 @@
     var config, webpart;
 
     function isPageInEditMode() {
-        return document.getElementsByClassName(editModeZoneClass).length != 0;
+        return document.getElementsByClassName(config.editModeZoneClass).length != 0 
+        || SP.Ribbon.PageState.Handlers.isInEditMode();
     }
 
     function togglePageContent(value) {
@@ -13,6 +14,13 @@
         } else {
             document.getElementById(config.pageClass).classList.add(config.ghostNodeClass);
         }
+    }
+
+    function initOnWindowLoad(fn) {
+        if (window.addEventListener)
+            window.addEventListener('load', fn, false);
+        else if (window.attachEvent)
+            window.attachEvent('onload', fn);
     }
 
     config = {
@@ -167,11 +175,10 @@
     };
 
     togglePageContent(false);
-    window.onload = function () {
+    initOnWindowLoad(function () {
         if (!isPageInEditMode()) {
             webpart.init();
         }
         togglePageContent(true);
-    };
-
+    });
 })();
