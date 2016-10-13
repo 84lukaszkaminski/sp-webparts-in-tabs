@@ -3,15 +3,28 @@
 
     var config, webpart;
 
+    function isPageInEditMode() {
+        return document.getElementsByClassName(editModeZoneClass).length != 0;
+    }
+
+    function togglePageContent(value) {
+        if (value) {
+            document.getElementById(config.pageClass).classList.remove(config.ghostNodeClass);
+        } else {
+            document.getElementById(config.pageClass).classList.add(config.ghostNodeClass);
+        }
+    }
+
     config = {
         hiddenNodeClass: 'insane-epsilon-display-none',
         ghostNodeClass: 'insane-epsilon-ghost',
         tabbarClass: 'insane-eplison-webpart-tabbar',
         webpartDecoratorClass: 'insane-epsilon-webpart-decorator',
         pageClass: 'DeltaPlaceHolderMain',
-        webpartClass: 'ms-rte-wpbox',
+        webpartClass: 'ms-webpart-chrome',
         headerClass: 'ms-webpart-chrome-title',
         titleClass: 'ms-webpart-titleText',
+        editModeZoneClass: 'ms-SPZone',
         tabTitleFormat: 'tab #{index}',
         isHeaderHidden: true,
         tabbarNode: 'ul',
@@ -69,7 +82,7 @@
                 activateTab: function (tab) {
                     priv.tabs.forEach(function (oneTab) {
                         if (oneTab == tab) {
-                            oneTab.show();                            
+                            oneTab.show();
                         } else {
                             oneTab.hide();
                         }
@@ -135,7 +148,7 @@
             tabbars = [];
 
             webparts = Array.prototype.slice.call(document.getElementsByClassName(config.webpartClass), 0).map(function (oneWebpart, index) {
-                return webpart.createWebpartWrapper({ webpart: oneWebpart, index: index });
+                return webpart.createWebpartWrapper({ webpart: oneWebpart.parentNode, index: index });
             });
             webparts.forEach(function (oneWebpart) {
                 if (oneWebpart.isTabbar()) {
@@ -150,23 +163,15 @@
             tabbars.forEach(function (oneTabbar) {
                 oneTabbar.render();
             });
-        },
-
-        togglePageContent: function (value) {
-            if (value) {
-                document.getElementById(config.pageClass).classList.remove(config.ghostNodeClass);
-            } else {
-                document.getElementById(config.pageClass).classList.add(config.ghostNodeClass);
-            }
         }
     };
 
-    webpart.togglePageContent(false);
+    togglePageContent(false);
     window.onload = function () {
-        if (!PageState.ViewModeIsEdit) {
+        if (!isPageInEditMode()) {
             webpart.init();
         }
-        webpart.togglePageContent(true);
+        togglePageContent(true);
     };
 
 })();
